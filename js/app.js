@@ -44,6 +44,10 @@ new Bus('wine-glass');
 
 var recentRandomNumbers = [];
 
+function random(min, max){
+  return Math.floor(Math.random( * (max - min +1) + min);)
+}
+
 function render(){
 
   var randomIndex = random(0, allBus.length-1);
@@ -52,3 +56,15 @@ function render(){
     randomIndex = random(0, allBus.length-1);
   }
 }
+
+recentRandomNumbers.push(randomIndex);
+
+if(recentRandomNumbers.length > 6){
+  recentRandomNumbers.shift();
+}
+
+allBus[randomIndex].views++;
+
+busTwoEl.src = allBus[randomIndex].filepath;
+busTwoEl.alt = allBus[randomIndex].name;
+busTwoEl.title = allBuss[randomIndex].name;
