@@ -2,69 +2,65 @@
 
 var votesRemaining = 25;
 
-var busContainerEl = document.getElementById('bus-contianer');
+var busMallOneEl = document.getElementById('picture1');
+var busMallTwoEl = document.getElementById('picture2');
+var busMallThreeEl = document.getElementById('picture 3');
 
-var resultsEl = document.getElementById('results');
+var containerEl = document.getElementById('busmall-container');
 
-var busOneEl = document.getElementById('bus-1');
-var busTwoEl = document.getElementById('bus-2');
-var busThreeEl = document.getElementById('bus-3');
+var allBusMall = [];
 
-var allBus = [];
-
-function bus(name){
-  this.name = name;
-  this.filepath = 'img/${name}.jpg';
+function busMall(name){
+  this.alt = name;
+  this.title = name;
+  this.src = `img/${name.jpg}`;
   this.votes = 0;
   this.views = 0;
 
-  allBus.push(this);
+  allBusMall.push(this);
 }
 
-new Bus('bag');
-new Bus('banana');
-new Bus('bathroom');
-new Bus('boots');
-new Bus('breakfast');
-new Bus('bubblegum');
-new Bus('chair');
-new Bus('cthulhu');
-new Bus('dog-duck');
-new Bus('dragon');
-new Bus('pen');
-new Bus('pet-sweep');
-new Bus('scissors');
-new Bus('shark');
-new Bus('sweep');
-new Bus('tauntaun');
-new Bus('unicorn');
-new Bus('usb');
-new Bus('water-can');
-new Bus('wine-glass');
+function imageGenerator(){
 
-var recentRandomNumbers = [];
+  var index = random(allBusMall.length);
 
-function random(min, max){
-  return Math.floor(Math.random( * (max - min +1) + min);)
-}
+  busMallOneEl.src = allBusMall[index].src;
+  busMallOneEl.alt = allBusMall[index].alt;
+  busMallOneEl.title = allBusMall[index].title;
 
-function render(){
+  allBusMall[index].views++;
 
-  var randomIndex = random(0, allBus.length-1);
+  var indexTwo = random(allBusMall.length);
 
-  while(recentRandomNumbers.includes(randomIndex)){
-    randomIndex = random(0, allBus.length-1);
+  while(indexTwo === index){
+    indexTwo = random(allBusMall.length);
   }
+
+  busMallTwoEl.src = allBusMall[indexTwo].src;
+  busMallTwoEl.alt = allBusMall[indexTwo].alt;
+  busMallTwoEl.title = allBusMall[indexTwo].title;
+
+  allBusMall[indexTwo].views++;
 }
 
-recentRandomNumbers.push(randomIndex);
+busMallThreeEl.src = allBusMall[indexThree].src;
+busMallThreeEl.alt = allBusMall[indexThree].alt;
+busMallThreeEl.title = allBusMall[indexThree].title;
 
-if(recentRandomNumbers.length > 6){
-  recentRandomNumbers.shift();
+// allBusMall[indexThree].views++;
+
+function handleClick(event){
+  var clickedBusMall = event.target.title;
+
+  for(var i = 0; i < allBusMall.length; i++){
+    if(clickedBusMall === allBusMall[i].title{
+      allBusMall[i].votes++;
+    }
+  }
+
+  imageGenerator();
 }
 
-allBus[randomIndex].views++;
+containerEl.addEventListener('click', handleClick);
 
-busTwoEl.src = allBus[randomIndex].filepath;
-busTwoEl.alt = allBus[randomIndex].name;
-busTwoEl.title = allBuss[randomIndex].name;
+imageGenerator();
