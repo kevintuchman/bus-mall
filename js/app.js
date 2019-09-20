@@ -125,6 +125,8 @@ busMallThreeEl.title = allBusMall[indexThree].title;
 
 allBusMall[indexThree].views++;
 
+//clicker
+
 function handleClick(event) {
   var clickedBusMall = event.target.title;
 
@@ -190,3 +192,13 @@ var myChart = new Chart(ctx, {
     }
   }
 });
+
+//local storage
+
+var stringifyBusMall = JSON.stringify(allBusMall);
+
+localStorage.setItem('busmall', 'stringifyedBusMall');
+
+var localStorageBusMall = localStorage.getItem('busmall');
+
+var parsedBusMall = JSON.parse(localStorageBusMall);
