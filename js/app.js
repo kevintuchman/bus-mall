@@ -47,21 +47,26 @@ function populateData(){
   new BusMall('water-can');
   new BusMall('wine-glass');
 }
-
-
-
-function render() {
+//make it random
+function getRandomIndex() {
 
   var randomIndex = random(0, allBusMall.length - 1);
 
-  // while (recentRandomNumbers.includes(randomIndex)) {
-  //   randomIndex = random(0, allBusMall.length - 1);
-  // }
+  while (recentRandomNumbers.includes(randomIndex)) {
+    randomIndex = random(0, allBusMall.length - 1);
+  }
+  recentRandomNumbers.push(randomIndex);
 
-  // if (recentRandomNumbers.length > 3) {
-  //   recentRandomNumbers.shift();
-  // }
-  // recentRandomNumbers.push(randomIndex)
+  if (recentRandomNumbers.length > 6) {
+    recentRandomNumbers.shift();
+  }
+  return randomIndex;
+}
+//random generator
+function render() {
+  var randomIndex = getRandomIndex();
+  var randomIndexTwo = getRandomIndex();
+  var randomIndexThree = getRandomIndex();
 
   allBusMall[randomIndex].views++;
   console.log(randomIndex);
@@ -69,14 +74,12 @@ function render() {
   busMallOneEl.alt = allBusMall[randomIndex].title;
   busMallOneEl.title = allBusMall[randomIndex].title;
 
-  var randomIndexTwo = random(0, allBusMall.length - 1);
   allBusMall[randomIndexTwo].views++;
   console.log(randomIndexTwo);
   busMallTwoEl.src = allBusMall[randomIndexTwo].src;
   busMallTwoEl.alt = allBusMall[randomIndexTwo].title;
   busMallTwoEl.title = allBusMall[randomIndexTwo].title;
 
-  var randomIndexThree = random(0, allBusMall.length - 1);
   allBusMall[randomIndexThree].views++;
   console.log(randomIndexThree);
   busMallThreeEl.src = allBusMall[randomIndexThree].src;
@@ -115,8 +118,24 @@ function imageGenerator() {
   allBusMall[indexThree].views++;
 }
 
-//clicker
+//results
+function showResults() {
+  console.log(allBusMall);
+  var labels = [];
+  var dataResults = [];
+  for(var i = 0; i < allBusMall.length; i++){
+    var title = allBusMall[i].title;
+    labels.push(title);
+    var temp = allBusMall[i].votes;
+    var shown = allBusMall[i].views;
+    dataResults.push(100 * temp / shown);
+  }
+  console.log('labels ', labels);
+  console.log('dataResults ', dataResults);
 
+
+}
+//clicker
 function handleClick(event) {
   var clickedBusMall = event.target.title;
   console.log('You clicked on', clickedBusMall);
@@ -130,6 +149,7 @@ function handleClick(event) {
   if (votesRemaining === 0) {
     console.log('voting is done');
     containerEl.removeEventListener('click', handleClick);
+    showResults();
     // render the results to the DOM
   //   renderChart();
   }
