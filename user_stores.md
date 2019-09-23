@@ -4,3 +4,4 @@
 1. As a member of the marketing team, I would like to see how many times a picture was clicked on.<br>
 1. As a member of the marketing team, I would like to see the percentage of how many times an item was clicked on.<br>
 1. As a user of bus mall, I would like my data stored in local storage.<br>
+// four for each group
