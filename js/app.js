@@ -26,26 +26,31 @@ function random(min, max) {
 }
 
 function populateData(){
-  new BusMall('bag');
-  new BusMall('banana');
-  new BusMall('bathroom');
-  new BusMall('boots');
-  new BusMall('breakfast');
-  new BusMall('bubblegum');
-  new BusMall('chair');
-  new BusMall('cthulhu');
-  new BusMall('dog-duck');
-  new BusMall('dragon');
-  new BusMall('pen');
-  new BusMall('pet-sweep');
-  new BusMall('scissors');
-  new BusMall('shark');
-  new BusMall('sweep');
-  new BusMall('tauntaun');
-  new BusMall('unicorn');
-  new BusMall('usb');
-  new BusMall('water-can');
-  new BusMall('wine-glass');
+  var temp = localStorage.getItem('votesRemaining');
+  if (temp){
+    //get data and parse it
+  }else{
+    new BusMall('bag');
+    new BusMall('banana');
+    new BusMall('bathroom');
+    new BusMall('boots');
+    new BusMall('breakfast');
+    new BusMall('bubblegum');
+    new BusMall('chair');
+    new BusMall('cthulhu');
+    new BusMall('dog-duck');
+    new BusMall('dragon');
+    new BusMall('pen');
+    new BusMall('pet-sweep');
+    new BusMall('scissors');
+    new BusMall('shark');
+    new BusMall('sweep');
+    new BusMall('tauntaun');
+    new BusMall('unicorn');
+    new BusMall('usb');
+    new BusMall('water-can');
+    new BusMall('wine-glass');
+  }
 }
 //make it random
 function getRandomIndex() {
@@ -143,12 +148,17 @@ function handleClick(event) {
     if (clickedBusMall === allBusMall[i].title) {
       allBusMall[i].votes++;
       votesRemaining = votesRemaining - 1;
+      //local storage
+      localStorage.setItem('votesRemaining', JSON.stringify(votesRemaining));
+      localStorage.setItem('busMallData', JSON.stringify(allBusMall));
     }
   }
 
   if (votesRemaining === 0) {
     console.log('voting is done');
     containerEl.removeEventListener('click', handleClick);
+    votesRemaining = 25;
+    localStorage.setItem('votesRemaining', JSON.stringify(votesRemaining));
     showResults();
     // render the results to the DOM
   //   renderChart();
