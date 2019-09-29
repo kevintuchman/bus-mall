@@ -1,4 +1,5 @@
 'use strict';
+
 var recentRandomNumbers = [];
 
 var votesRemaining = 25;
@@ -8,13 +9,96 @@ var busMallTwoEl = document.getElementById('picture2');
 var busMallThreeEl = document.getElementById('picture3');
 
 var containerEl = document.getElementById('busmall-container');
+var ctx = document.getElementById('myChart').getContext('2d');
 
+// 
 var allBusMall = [];
+var itemNames = [];
+var itemLikes = [];
 
-function BusMall(name) {
+function renderChart(){
+  var chartData = {
+    labels: itemNames,
+    datasets: [{
+      label: 'Number of Likes',
+      data: itemLikes,
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(245, 150, 40, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1,
+    }],
+  };
+  var chartOptions = {
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+        },
+      }],
+    },
+  };
+  var chart = {
+    type: 'bar',
+    data: chartData,
+    options: chartOptions,
+  };
+  for(var i in allBusMall){
+    itemNames.push(allBusMall[i].title);
+    itemLikes.push(allBusMall[i].votes);
+  }
+
+  //chart
+  var myChart = new Chart(ctx, chart);
+  console.log(itemNames);
+  console.log(itemLikes);
+}
+function BusMall(name, fileextension) {
   this.alt = name;
   this.title = name;
-  this.src = `img/${name}.jpg`;
+  this.src = `img/${name}.${fileextension}`;
   this.votes = 0;
   this.views = 0;
 
@@ -25,41 +109,37 @@ function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function populateData(){
-  var temp = localStorage.getItem('votesRemaining');
-  if (temp){
-    //get data and parse it
+function populateData() {
+  if(!localStorage.getItem('votesTotal')){
+    new BusMall('bag', 'jpg');
+    new BusMall('banana', 'jpg');
+    new BusMall('bathroom', 'jpg');
+    new BusMall('boots', 'jpg');
+    new BusMall('breakfast', 'jpg');
+    new BusMall('bubblegum', 'jpg');
+    new BusMall('chair', 'jpg');
+    new BusMall('cthulhu', 'jpg');
+    new BusMall('dog-duck', 'jpg');
+    new BusMall('dragon', 'jpg');
+    new BusMall('pen', 'jpg');
+    new BusMall('pet-sweep', 'jpg');
+    new BusMall('scissors', 'jpg');
+    new BusMall('shark', 'jpg');
+    new BusMall('sweep', 'png');
+    new BusMall('tauntaun', 'jpg');
+    new BusMall('unicorn', 'jpg');
+    new BusMall('usb', 'gif');
+    new BusMall('water-can', 'jpg');
+    new BusMall('wine-glass', 'jpg');
   }else{
-    new BusMall('bag');
-    new BusMall('banana');
-    new BusMall('bathroom');
-    new BusMall('boots');
-    new BusMall('breakfast');
-    new BusMall('bubblegum');
-    new BusMall('chair');
-    new BusMall('cthulhu');
-    new BusMall('dog-duck');
-    new BusMall('dragon');
-    new BusMall('pen');
-    new BusMall('pet-sweep');
-    new BusMall('scissors');
-    new BusMall('shark');
-    new BusMall('sweep');
-    new BusMall('tauntaun');
-    new BusMall('unicorn');
-    new BusMall('usb');
-    new BusMall('water-can');
-    new BusMall('wine-glass');
+    allBusMall = JSON.parse(localStorage.getItem('votesTotal'));
   }
 }
 //make it random
 function getRandomIndex() {
 
   var randomIndex = random(0, allBusMall.length - 1);
-
-  while (recentRandomNumbers.includes(randomIndex)) {
-    randomIndex = random(0, allBusMall.length - 1);
-  }
+  recentRandomNumbers.push(randomIndex);
   recentRandomNumbers.push(randomIndex);
 
   if (recentRandomNumbers.length > 6) {
@@ -74,27 +154,25 @@ function render() {
   var randomIndexThree = getRandomIndex();
 
   allBusMall[randomIndex].views++;
-  console.log(randomIndex);
   busMallOneEl.src = allBusMall[randomIndex].src;
   busMallOneEl.alt = allBusMall[randomIndex].title;
   busMallOneEl.title = allBusMall[randomIndex].title;
 
   allBusMall[randomIndexTwo].views++;
-  console.log(randomIndexTwo);
   busMallTwoEl.src = allBusMall[randomIndexTwo].src;
   busMallTwoEl.alt = allBusMall[randomIndexTwo].title;
   busMallTwoEl.title = allBusMall[randomIndexTwo].title;
 
   allBusMall[randomIndexThree].views++;
-  console.log(randomIndexThree);
   busMallThreeEl.src = allBusMall[randomIndexThree].src;
   busMallThreeEl.alt = allBusMall[randomIndexThree].title;
   busMallThreeEl.title = allBusMall[randomIndexThree].title;
 }
 
+//image generator
 function imageGenerator() {
 
-  var index = random(allBusMall.length);
+  var index = getRandomIndex();
 
   busMallOneEl.src = allBusMall[index].src;
   busMallOneEl.alt = allBusMall[index].alt;
@@ -102,10 +180,10 @@ function imageGenerator() {
 
   allBusMall[index].views++;
 
-  var indexTwo = random(allBusMall.length);
+  var indexTwo = getRandomIndex();
 
-  while (indexTwo === index) {
-    indexTwo = random(allBusMall.length);
+  while (indexTwo === index ) {
+    indexTwo = getRandomIndex();
   }
 
   busMallTwoEl.src = allBusMall[indexTwo].src;
@@ -114,8 +192,11 @@ function imageGenerator() {
 
   allBusMall[indexTwo].views++;
 
-  var indexThree = random(allBusMall.length);
+  var indexThree = getRandomIndex();
 
+  while (indexThree === index || indexThree === indexTwo){
+    indexThree = getRandomIndex();
+  }
   busMallThreeEl.src = allBusMall[indexThree].src;
   busMallThreeEl.alt = allBusMall[indexThree].alt;
   busMallThreeEl.title = allBusMall[indexThree].title;
@@ -123,101 +204,42 @@ function imageGenerator() {
   allBusMall[indexThree].views++;
 }
 
-//results
+// results
 function showResults() {
-  console.log(allBusMall);
   var labels = [];
   var dataResults = [];
-  for(var i = 0; i < allBusMall.length; i++){
+  for (var i = 0; i < allBusMall.length; i++) {
     var title = allBusMall[i].title;
     labels.push(title);
     var temp = allBusMall[i].votes;
     var shown = allBusMall[i].views;
     dataResults.push(100 * temp / shown);
   }
-  console.log('labels ', labels);
-  console.log('dataResults ', dataResults);
 
 
 }
 //clicker
 function handleClick(event) {
   var clickedBusMall = event.target.title;
-  console.log('You clicked on', clickedBusMall);
+  imageGenerator();
   for (var i = 0; i < allBusMall.length; i++) {
     if (clickedBusMall === allBusMall[i].title) {
       allBusMall[i].votes++;
       votesRemaining = votesRemaining - 1;
-      //local storage
-      localStorage.setItem('votesRemaining', JSON.stringify(votesRemaining));
-      localStorage.setItem('busMallData', JSON.stringify(allBusMall));
     }
   }
-
-  if (votesRemaining === 0) {
-    console.log('voting is done');
+  if (votesRemaining === 0){
     containerEl.removeEventListener('click', handleClick);
-    votesRemaining = 25;
-    localStorage.setItem('votesRemaining', JSON.stringify(votesRemaining));
-    showResults();
-    // render the results to the DOM
-  //   renderChart();
-  }
-  else{
-    render();
+    localStorage.setItem('votesTotal', JSON.stringify(allBusMall));
+    renderChart();
   }
 }
+
+
+votesRemaining = 25;
+showResults();
 
 containerEl.addEventListener('click', handleClick);
 //main functions
 populateData();
-console.log(allBusMall);
 render();
-
-// var ctx = document.getElementById('myChart').getContext('2d');
-// var myChart = new Chart(ctx, {
-//   type: 'bar',
-//   data: {
-//     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-//     datasets: [{
-//       label: '# of Votes',
-//       data: [12, 19, 3, 5, 2, 3],
-//       backgroundColor: [
-//         'rgba(255, 99, 132, 0.2)',
-//         'rgba(54, 162, 235, 0.2)',
-//         'rgba(255, 206, 86, 0.2)',
-//         'rgba(75, 192, 192, 0.2)',
-//         'rgba(153, 102, 255, 0.2)',
-//         'rgba(255, 159, 64, 0.2)'
-//       ],
-//       borderColor: [
-//         'rgba(255, 99, 132, 1)',
-//         'rgba(54, 162, 235, 1)',
-//         'rgba(255, 206, 86, 1)',
-//         'rgba(75, 192, 192, 1)',
-//         'rgba(153, 102, 255, 1)',
-//         'rgba(255, 159, 64, 1)'
-//       ],
-//       borderWidth: 1
-//     }]
-//   },
-//   options: {
-//     scales: {
-//       yAxes: [{
-//         ticks: {
-//           beginAtZero: true
-//         }
-//       }]
-//     }
-//   }
-// });
-
-//local storage
-
-// var stringifyBusMall = JSON.stringify(allBusMall);
-
-// localStorage.setItem('busmall', 'stringifyedBusMall');
-
-// var localStorageBusMall = localStorage.getItem('busmall');
-
-// var parsedBusMall = JSON.parse(localStorageBusMall);
