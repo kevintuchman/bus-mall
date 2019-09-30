@@ -1,5 +1,6 @@
 'use strict';
 
+//array to put in pictures
 var recentRandomNumbers = [];
 
 var votesRemaining = 25;
@@ -11,11 +12,12 @@ var busMallThreeEl = document.getElementById('picture3');
 var containerEl = document.getElementById('busmall-container');
 var ctx = document.getElementById('myChart').getContext('2d');
 
-// 
+//arrays
 var allBusMall = [];
 var itemNames = [];
 var itemLikes = [];
 
+//chart
 function renderChart(){
   var chartData = {
     labels: itemNames,
@@ -90,11 +92,12 @@ function renderChart(){
     itemLikes.push(allBusMall[i].votes);
   }
 
-  //chart
   var myChart = new Chart(ctx, chart);
   console.log(itemNames);
   console.log(itemLikes);
 }
+
+//constructor function
 function BusMall(name, fileextension) {
   this.alt = name;
   this.title = name;
@@ -204,7 +207,7 @@ function imageGenerator() {
   allBusMall[indexThree].views++;
 }
 
-// results
+//results
 function showResults() {
   var labels = [];
   var dataResults = [];
