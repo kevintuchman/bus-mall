@@ -1,11 +1,11 @@
-bus-mall
+Lab 11: BusMall
 
 Kevin Tuchman
 
-demo: https://github.com/codefellows/seattle-201n15/tree/master/class-11/cat-demo
+A bus mall catalogue for users to use by clicking on the pictures of products that interest them.
 
-demo: https://github.com/codefellows/seattle-201n15/blob/master/class-12/demo-canvas/app.js
+Click on the one of the three randomized pictures that appear 25 times and a graph will show up!
 
-chart: https://github.com/chartjs/Chart.js.git
+Deployed Site: https://kevintuchman.github.io/bus-mall/
 
-click on the pictures you like 25 times to see your results
+Putting another parameter so this. can read pictures with .png or .url came from Noah's lab: https://github.com/noahsadude/bus-mall/blob/master/js/app.js
