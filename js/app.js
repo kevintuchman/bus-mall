@@ -96,7 +96,6 @@ function renderChart(){
   console.log(itemNames);
   console.log(itemLikes);
 }
-
 //constructor function
 function BusMall(name, fileextension) {
   this.alt = name;
